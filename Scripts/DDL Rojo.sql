@@ -1,0 +1,80 @@
+CREATE DATABASE PROJETO_ROJO
+
+USE PROJETO_ROJO
+
+CREATE TABLE TipoUsuario(
+	IdTipoUsuario SMALLINT PRIMARY KEY IDENTITY,
+	Usuario VARCHAR(15) NOT NULL UNIQUE
+);
+GO
+
+CREATE TABLE Usuario(
+	IdUsuario INT PRIMARY KEY IDENTITY,
+	IdTipoUsuario SMALLINT FOREIGN KEY REFERENCES TipoUsuario(IdTipoUsuario),
+	Email VARCHAR(100) NOT NULL,
+	Senha VARCHAR(13) NOT NULL,
+	Contato VARCHAR(15) NOT NULL,
+	Nome VARCHAR(150) NOT NULL,
+	Cargo VARCHAR(255) NOT NULL,
+	RazaoSocial VARCHAR(255) NOT NULL,
+);
+GO
+
+CREATE TABLE ImgUsuario (
+	IdImg INT PRIMARY KEY IDENTITY(1,1),
+	IdUsuario INT UNIQUE FOREIGN KEY REFERENCES usuario(idUsuario),
+	binario VARBINARY(MAX) NOT NULL,
+	mimeType VARCHAR(30) NOT NULL,
+	nomeArquivo VARCHAR(250) NOT NULL,
+	data_inclusao DATETIME DEFAULT GETDATE() NULL
+);
+GO
+
+CREATE TABLE TipoEquipamento(
+	IdTipoEquipamento INT PRIMARY KEY IDENTITY,
+	Equipamento VARCHAR(100) NOT NULL UNIQUE
+);
+GO
+
+
+CREATE TABLE Equipamento(
+	IdEquipamento INT PRIMARY KEY IDENTITY,
+	IdUsuario INT FOREIGN KEY REFERENCES USUARIO (IdUsuario),
+	IdTipoEquipamento INT FOREIGN KEY REFERENCES TIPOEQUIPAMENTO (IdTipoEquipamento) NOT NULL,
+	NumeroDeSerie INT,
+	Modelo VARCHAR(80),
+	GateWay INT ,
+	Mask INT,
+	DNS INT ,
+	Porta INT ,
+	DataEntrada DATE NOT NULL,
+	Descricao TEXT
+	 
+);
+GO
+
+CREATE TABLE Alteracao(
+	IdAlteracao INT PRIMARY KEY IDENTITY,
+	IdEquipametno INT FOREIGN KEY REFERENCES Equipamento (IdEquipamento),
+	Descricao VARCHAR(255) NOT NULL,
+	DataAlteracao DATE NOT NULL
+);
+GO
+
+CREATE TABLE Alerta(
+	IdAlerta INT PRIMARY KEY IDENTITY,
+	IdEquipamento INT FOREIGN KEY REFERENCES Equipamento (IdEquipamento),
+	Descricao VARCHAR(255) NOT NULL
+);
+GO
+
+CREATE TABLE ImgEquipamento(
+	IdImagemEquipamento INT PRIMARY KEY IDENTITY,
+	IdEquipamento INT FOREIGN KEY REFERENCES EQUIPAMENTO (IdEquipamento),
+	binario VARBINARY(MAX) NOT NULL,
+	mimeType VARCHAR(30) NOT NULL,
+	nomeArquivo VARCHAR(250) NOT NULL,
+	data_inclusao DATETIME DEFAULT GETDATE() NULL
+);
+GO
+
